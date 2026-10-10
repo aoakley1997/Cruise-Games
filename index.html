@@ -4,455 +4,1303 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#10283f">
+<meta name="theme-color" content="#102a43">
 <title>Cruise Chaos</title>
+
 <style>
 :root {
-  --navy:#10283f; --blue:#1d4962; --aqua:#75e0d2;
-  --coral:#ff806f; --cream:#f3f7f8; --ink:#172b3a;
-  --muted:#70818c; --line:#dce6e9; --gold:#f6cb68;
+  --navy: #102a43;
+  --blue: #243f5c;
+  --teal: #40c9b5;
+  --cream: #f4f7fa;
+  --white: #ffffff;
+  --muted: #6b7c8e;
+  --border: #dfe7ef;
+  --gold: #f6c85f;
+  --red: #d95d5d;
+  --radius: 18px;
 }
-* { box-sizing:border-box }
+
+* { box-sizing: border-box; }
+
 body {
-  margin:0; background:var(--cream); color:var(--ink);
-  font-family:system-ui,-apple-system,sans-serif;
+  margin: 0;
+  background: var(--cream);
+  color: var(--navy);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
 }
-button,input,select { font:inherit }
-button { cursor:pointer }
+
+button, input, select {
+  font: inherit;
+}
+
+button { cursor: pointer; }
+
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 2px;
+}
+
+.app {
+  width: min(100%, 760px);
+  margin: auto;
+  padding: 16px 16px 110px;
+}
+
 .hero {
-  background:linear-gradient(140deg,var(--navy),var(--blue));
-  color:white; padding:24px 18px; border-radius:0 0 25px 25px;
+  background: linear-gradient(135deg, #102a43, #28546b);
+  color: white;
+  border-radius: 25px;
+  padding: 25px 22px;
+  position: relative;
+  overflow: hidden;
 }
-.wrap { max-width:780px; margin:auto }
-.brand { color:var(--aqua); font-size:11px; font-weight:900; letter-spacing:2px }
-h1 { font-size:44px; line-height:.95; letter-spacing:-2px; margin:16px 0 8px }
-.hero p { color:#d6e8ee; font-size:14px; line-height:1.5 }
-.scores { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:20px }
-.scorecard {
-  border:1px solid #ffffff35; background:#ffffff12;
-  border-radius:14px; padding:12px 8px; color:white; text-align:left;
+
+.hero::after {
+  content: "🚢";
+  position: absolute;
+  right: 15px;
+  bottom: 0;
+  font-size: 76px;
+  opacity: .18;
+  transform: rotate(-8deg);
 }
-.scorecard.active { background:var(--aqua); color:var(--navy) }
-.scorecard strong { display:block; font-size:25px }
-.scorecard span { font-size:12px; font-weight:700 }
-main { padding:16px 13px 95px }
-.toolbar { display:flex; gap:8px; margin-bottom:12px }
-select,input {
-  min-width:0; padding:11px; border:1px solid var(--line);
-  border-radius:11px; background:white; color:var(--ink);
+
+.eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 800;
+  color: var(--teal);
 }
-.toolbar select { flex:1 }
-.tabs { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:14px 0 }
-.tab {
-  border:1px solid var(--line); border-radius:11px; padding:11px 3px;
-  background:white; color:var(--muted); font-size:11px; font-weight:850;
+
+h1 {
+  font-size: clamp(32px, 8vw, 45px);
+  margin: 8px 0;
+  letter-spacing: -1.5px;
 }
-.tab.active { background:var(--navy); color:white }
-.panel { display:none }
-.panel.active { display:block }
-h2 { font-size:25px; margin:4px 0 }
-h3 { margin:5px 0 8px }
-.eyebrow { color:#078a80; font-size:10px; font-weight:900; letter-spacing:1.4px; text-transform:uppercase }
-.sub { color:var(--muted); font-size:12px; line-height:1.5 }
-.card { background:white; border:1px solid var(--line); border-radius:17px; padding:15px; margin-bottom:12px }
-.feature { background:linear-gradient(135deg,var(--navy),#245a6d); color:white; border:0 }
-.feature .eyebrow { color:var(--aqua) }
-.feature p { color:#d7e7ed; font-size:13px; line-height:1.5 }
+
+.hero p {
+  max-width: 420px;
+  line-height: 1.5;
+  margin: 0;
+  color: #e0edf4;
+  font-size: 14px;
+}
+
+.day-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.day-row label {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+select, input {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--navy);
+  border-radius: 11px;
+  padding: 11px 12px;
+  min-width: 0;
+}
+
+.day-row select { flex: 1; }
+
+.section-title {
+  font-size: 19px;
+  letter-spacing: -.4px;
+  margin: 24px 0 12px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.players {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.player-card {
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 13px 7px;
+  text-align: center;
+  min-width: 0;
+  box-shadow: 0 2px 8px #102a4308;
+}
+
+.player-card.active {
+  border-color: var(--teal);
+  background: #edfffb;
+}
+
+.player-emoji { font-size: 24px; }
+
+.player-name {
+  display: block;
+  margin: 6px 0;
+  font-size: 13px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.player-score {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.player-points {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 17px;
+  margin-top: 14px;
+  box-shadow: 0 3px 12px #102a4307;
+}
+
+.panel h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.panel p { line-height: 1.5; }
+
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  background: #e8f8f5;
+  color: #146d62;
+  padding: 5px 8px;
+  border-radius: 7px;
+  margin-bottom: 9px;
+}
+
+.big-number {
+  font-size: 30px;
+  font-weight: 900;
+  margin: 8px 0;
+}
+
 .btn {
-  border:0; border-radius:11px; background:var(--navy); color:white;
-  padding:11px 13px; font-size:12px; font-weight:850;
+  border: 0;
+  border-radius: 11px;
+  padding: 12px 15px;
+  background: var(--navy);
+  color: white;
+  font-weight: 800;
+  font-size: 13px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
 }
-.btn.aqua { background:var(--aqua); color:var(--navy) }
-.btn.light { background:#edf3f5; color:var(--navy) }
-.btn.coral { background:var(--coral); color:#351d20 }
-.btn:disabled { opacity:.45; cursor:default }
-.actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px }
-.bingo { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px }
-.tile {
-  min-height:95px; border:1px solid var(--line); border-radius:12px;
-  background:#f7fafb; color:var(--ink); padding:8px 5px;
-  font-size:11px; font-weight:750; line-height:1.3;
+
+.btn.teal {
+  background: var(--teal);
+  color: #073e39;
 }
-.tile .emoji { display:block; font-size:22px; margin-bottom:6px }
-.tile.done { background:#d9f7ef; border-color:#64cbb6 }
-.tile.done:after { content:"✓ SPOTTED"; display:block; color:#087a73; font-size:9px; margin-top:5px }
-.task {
-  display:flex; align-items:flex-start; gap:9px; padding:11px 0;
-  border-bottom:1px solid #edf1f3;
+
+.btn.light {
+  background: #edf2f6;
+  color: var(--navy);
 }
-.task:last-child { border-bottom:0 }
-.task .emoji { font-size:22px }
-.taskbody { flex:1; min-width:0 }
-.taskbody strong { display:block; font-size:12px }
-.taskbody p { margin:4px 0 0; color:var(--muted); font-size:11px; line-height:1.4 }
-.points { font-size:10px; font-weight:900; color:#855b00; background:#fff0c9; border-radius:7px; padding:5px 6px; white-space:nowrap }
-.row { display:flex; align-items:center; justify-content:space-between; gap:8px }
-.field { margin:12px 0 }
-.field label { display:block; font-size:11px; font-weight:850; margin-bottom:6px }
-.field input,.field select { width:100% }
-.line { height:1px; background:var(--line); margin:14px 0 }
-.ranking { display:flex; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid #edf1f3 }
-.ranking:last-child { border-bottom:0 }
-.rank { width:30px; height:30px; border-radius:10px; background:#edf3f5; display:grid; place-items:center; font-weight:900 }
-.ranking:first-child .rank { background:#ffedb5 }
-.rankname { flex:1; font-weight:850; font-size:14px }
-.rankpoints { font-size:21px; font-weight:950 }
-.note { font-size:10px; color:var(--muted); line-height:1.5 }
-.footer {
-  position:fixed; bottom:0; left:0; right:0; background:#ffffffed;
-  border-top:1px solid var(--line); padding:10px;
+
+.btn.danger {
+  background: #fff0f0;
+  color: #a52b2b;
 }
-.footerinner { max-width:780px; margin:auto; display:flex; gap:8px }
-.footer button { flex:1 }
+
+.btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.btn.full { width: 100%; }
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: #ffffffef;
+  backdrop-filter: blur(15px);
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 8px max(5px, calc((100% - 740px) / 2)) calc(8px + env(safe-area-inset-bottom));
+}
+
+.nav button {
+  background: transparent;
+  border: 0;
+  border-radius: 11px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 7px 1px;
+}
+
+.nav button span {
+  display: block;
+  font-size: 21px;
+  margin-bottom: 3px;
+}
+
+.nav button.active {
+  color: var(--navy);
+  background: #e5f8f5;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+.progress {
+  height: 8px;
+  border-radius: 10px;
+  background: #e8edf2;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.progress > div {
+  height: 100%;
+  width: 0;
+  background: var(--teal);
+  transition: width .2s;
+}
+
+.bingo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.bingo-cell {
+  min-height: 112px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #f8fafc;
+  padding: 8px 5px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--navy);
+  overflow-wrap: anywhere;
+}
+
+.bingo-cell .cell-emoji {
+  display: block;
+  font-size: 23px;
+  margin-bottom: 7px;
+}
+
+.bingo-cell.marked {
+  background: #dff9f2;
+  border-color: var(--teal);
+}
+
+.bingo-cell.marked .cell-emoji::after {
+  content: " ✓";
+  color: #16816e;
+  font-size: 12px;
+}
+
+.list-item {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 13px 0;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.list-item:last-child { border-bottom: 0; }
+
+.list-item .item-emoji {
+  font-size: 23px;
+  width: 31px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.list-item .item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-item strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.list-item small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.list-item .btn {
+  padding: 9px 10px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.fb-post {
+  background: #f5f7fa;
+  padding: 14px;
+  border-radius: 12px;
+  margin: 10px 0;
+  border: 1px solid var(--border);
+}
+
+.fb-post .post-title {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.fb-post .post-caption {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 6px 0 11px;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #169b88;
+}
+
+.check-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.check-label input { margin-top: 2px; }
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #edf1f5;
+  padding: 13px 0;
+}
+
+.rank-row:last-child { border-bottom: 0; }
+
+.rank {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: #edf2f6;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.rank-info { flex: 1; min-width: 0; }
+.rank-info strong { display: block; font-size: 14px; }
+.rank-info small { color: var(--muted); font-size: 11px; }
+
+.rank-points {
+  font-weight: 900;
+  font-size: 19px;
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.form-row input { flex: 1; width: 100%; }
+
+.empty {
+  text-align: center;
+  padding: 20px 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 17px 0;
+}
+
 .toast {
-  position:fixed; bottom:78px; left:50%; transform:translateX(-50%);
-  background:var(--navy); color:white; padding:12px 17px;
-  border-radius:20px; font-size:12px; font-weight:800; display:none;
-  z-index:5; max-width:90%; text-align:center;
+  position: fixed;
+  z-index: 20;
+  bottom: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy);
+  color: white;
+  padding: 12px 17px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 5px 20px #102a4333;
+  width: max-content;
+  max-width: calc(100% - 30px);
+  text-align: center;
 }
-@media(min-width:600px) {
-  .hero { padding:28px }
-  h1 { font-size:54px }
-  main { padding:22px 20px 100px }
-  .tile { font-size:12px; min-height:105px }
-  .tab { font-size:13px }
+
+.hidden { display: none !important; }
+
+@media (min-width: 600px) {
+  .bingo-cell { min-height: 130px; font-size: 13px; }
+  .bingo-cell .cell-emoji { font-size: 28px; }
 }
 </style>
 </head>
-<body>
-<header class="hero">
-  <div class="wrap">
-    <div class="brand">⚓ THE FAMILY CRUISE COMPETITION</div>
-    <h1>CRUISE<br>CHAOS.</h1>
-    <p>Three family members. One ship. Questionable passenger behaviour. One ultimate Chaos Champion.</p>
-    <div class="scores" id="scores"></div>
-  </div>
-</header>
 
-<main class="wrap">
-  <div class="toolbar">
-    <select id="player" aria-label="Playing as"></select>
-    <select id="day" aria-label="Cruise day">
-      <option value="1">Day 1</option><option value="2">Day 2</option>
-      <option value="3">Day 3</option><option value="4">Day 4</option>
-      <option value="5">Day 5</option><option value="6">Day 6</option>
-      <option value="7">Day 7</option><option value="8">Day 8</option>
+<body>
+<div class="app">
+
+  <header class="hero">
+    <div class="eyebrow">The family cruise championship</div>
+    <h1>CRUISE CHAOS</h1>
+    <p>Spot the madness. Judge the passengers. Survive the Facebook group. Only one family member gets bragging rights.</p>
+  </header>
+
+  <div class="day-row">
+    <label for="day-select">CRUISE DAY</label>
+    <select id="day-select" aria-label="Select cruise day">
+      <option value="1">Day 1 · Embarkation</option>
+      <option value="2">Day 2 · Sea day</option>
+      <option value="3">Day 3 · Port day</option>
+      <option value="4">Day 4 · Port day</option>
+      <option value="5">Day 5 · Sea day</option>
+      <option value="6">Day 6 · Port day</option>
+      <option value="7">Day 7 · Sea day</option>
+      <option value="8">Day 8 · Final day</option>
     </select>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-panel="today">☀️ Today</button>
-    <button class="tab" data-panel="bingo">🎯 Bingo</button>
-    <button class="tab" data-panel="quests">🧭 Quests</button>
-    <button class="tab" data-panel="leaderboard">🏆 Scores</button>
-  </div>
+  <div class="section-title">Who's playing? 👀</div>
+  <div class="players" id="player-cards"></div>
+  <p class="muted">Tap a player to make them the active player. Any points earned next will go to them.</p>
 
-  <section class="panel active" id="today">
-    <div class="eyebrow">Daily mayhem</div>
-    <h2>Today's chaos</h2>
-    <p class="sub">Choose your player above before claiming points.</p>
+  <main>
+    <section class="view active" id="view-today">
+      <h2 class="section-title">Today's mission</h2>
+      <div class="panel" id="daily-panel"></div>
 
-    <div class="card feature">
-      <div class="eyebrow">🎲 Daily challenge · 3 points</div>
-      <h3 id="dailyTitle">Sun Lounger CEO</h3>
-      <p id="dailyText">Spot a suspiciously territorial sunbed strategy.</p>
-      <div class="actions">
-        <button class="btn aqua" id="claimDaily">Claim 3 points</button>
-        <button class="btn light" id="nextDaily">Next challenge ↻</button>
+      <h2 class="section-title">⚖️ The Cruise Courtroom</h2>
+      <div class="panel">
+        <span class="tag">Officially ridiculous</span>
+        <h3 id="court-title">The case of the pool lounger</h3>
+        <p class="muted" id="court-description">A serious matter requiring an unreasonable verdict.</p>
+        <p><strong>Verdict:</strong> 2 points for the active player, once per day.</p>
+        <button class="btn teal full" id="court-btn">⚖️ Deliver the verdict (+2)</button>
       </div>
-    </div>
 
-    <div class="card">
-      <div class="eyebrow">🔮 Predictions league</div>
-      <h3>Predict the chaos</h3>
-      <p class="sub">Make a prediction before it happens. Get 2 points if it comes true.</p>
-      <div class="field">
-        <label for="prediction">Your prediction</label>
-        <input id="prediction" placeholder="Dad will visit the buffet four times…">
+      <h2 class="section-title">🔮 Make a prediction</h2>
+      <div class="panel">
+        <p class="muted">Predict something that might happen before the cruise ends. If you're right, you earn 2 points.</p>
+        <form id="prediction-form">
+          <div class="form-row">
+            <input id="prediction-input" maxlength="180" placeholder="Someone will complain about..." required>
+            <button class="btn" type="submit">Add</button>
+          </div>
+        </form>
+        <div id="predictions-list"></div>
       </div>
-      <button class="btn" id="addPrediction">Save prediction</button>
-      <div class="line"></div>
-      <div id="predictions"></div>
-    </div>
+    </section>
 
-    <div class="card">
-      <div class="eyebrow">⚖️ The cruise courtroom</div>
-      <h3 id="courtCase">Is saving six sun loungers with one towel a crime against humanity?</h3>
-      <p class="sub">One person prosecutes, one defends, one judges. Rotate roles!</p>
-      <div class="actions">
-        <button class="btn light" id="nextCase">New case</button>
-        <button class="btn coral" id="courtWin">Judge awards 2 points</button>
+    <section class="view" id="view-bingo">
+      <h2 class="section-title">🎯 Passenger bingo</h2>
+      <p class="muted">Everyone gets their own card each cruise day. Spot something in real life, tap the square, and earn points. Complete a row, column or diagonal for a bonus.</p>
+
+      <div class="panel">
+        <div class="tag">2 points per square · 3-point line bonus</div>
+        <div id="bingo-summary" class="muted"></div>
+        <div class="progress"><div id="bingo-progress"></div></div>
+        <div class="bingo-grid" id="bingo-grid"></div>
+        <div class="button-row">
+          <button class="btn light" id="new-bingo-btn">New card</button>
+        </div>
+        <p class="muted">A new card replaces this player's current card for the selected day. Previously earned points are not removed, but the new card starts unmarked.</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="panel" id="bingo">
-    <div class="eyebrow">Passenger safari</div>
-    <h2>Cruise chaos bingo</h2>
-    <p class="sub">Tap anything you spot. Each square scores 2 points. Complete a row or column for a 3-point bonus.</p>
-    <div class="card">
-      <div class="row">
-        <span class="points" id="bingoCount">0 / 9 spotted</span>
-        <button class="btn light" id="newCard">New card ↻</button>
+    <section class="view" id="view-facebook">
+      <h2 class="section-title">📱 Facebook group bingo</h2>
+      <p class="muted">For every painfully familiar cruise group post you actually spot, claim it for the active player. Each post can be claimed once per player per day.</p>
+      <div class="panel">
+        <div class="tag">1–2 points per post</div>
+        <div id="facebook-list"></div>
       </div>
-      <div class="line"></div>
-      <div class="bingo" id="bingo"></div>
-    </div>
+    </section>
 
-    <div class="card">
-      <div class="eyebrow">📱 Facebook group bingo</div>
-      <h3>We've all seen these posts</h3>
-      <p class="sub">Tick off the classic cruise-group moments. No need to name or shame anyone.</p>
-      <div id="facebook"></div>
-    </div>
-  </section>
+    <section class="view" id="view-quests">
+      <h2 class="section-title">🧭 Side quests</h2>
+      <p class="muted">Optional missions for the cruise. Some are easy. Some require a little commitment to the bit.</p>
+      <div class="panel">
+        <div class="tag">One claim per player per quest</div>
+        <div id="quests-list"></div>
+      </div>
+    </section>
 
-  <section class="panel" id="quests">
-    <div class="eyebrow">Ship-wide missions</div>
-    <h2>Side quests</h2>
-    <p class="sub">Complete these together or compete. Some are perfect for a lazy sea day.</p>
-    <div class="card" id="questList"></div>
-  </section>
+    <section class="view" id="view-scores">
+      <h2 class="section-title">🏆 Leaderboard</h2>
+      <div class="panel">
+        <div id="leaderboard"></div>
+      </div>
 
-  <section class="panel" id="leaderboard">
-    <div class="eyebrow">The official family record</div>
-    <h2>Leaderboard</h2>
-    <div class="card">
-      <div id="rankings"></div>
-      <div class="line"></div>
-      <h3 id="champion">The crown is up for grabs!</h3>
-      <p class="sub">Highest score when you get home wins ultimate bragging rights.</p>
-    </div>
-    <div class="card">
-      <div class="eyebrow">Crew settings</div>
-      <h3>Rename your players</h3>
-      <div class="field"><label for="name0">Player 1</label><input id="name0" maxlength="24"></div>
-      <div class="field"><label for="name1">Player 2</label><input id="name1" maxlength="24"></div>
-      <div class="field"><label for="name2">Player 3</label><input id="name2" maxlength="24"></div>
-      <button class="btn" id="saveNames">Save names</button>
-      <div class="line"></div>
-      <button class="btn light" id="export">Export backup</button>
-      <button class="btn coral" id="reset">Reset game</button>
-      <p class="note">Scores are saved in this browser on this device. Export a backup before changing devices or clearing browser data.</p>
-    </div>
-    <div class="card">
-      <div class="eyebrow">Scoring</div>
-      <p class="sub">Daily challenge: 3 points. Bingo square: 2 points. Bingo line: 3 bonus points. Facebook post: 1–2 points. Side quest: 1–3 points. Prediction: 2 points. Courtroom verdict: 2 points.</p>
-    </div>
-  </section>
-</main>
+      <h2 class="section-title">⚙️ Family & game settings</h2>
+      <div class="panel">
+        <h3>Player names</h3>
+        <p class="muted">Personalise the scoreboard for your family.</p>
+        <div id="name-fields"></div>
+        <button class="btn full" id="save-names-btn">Save player names</button>
+        <hr>
+        <h3>Save or move your game</h3>
+        <p class="muted">Your progress is stored in this browser on this device. Export a backup if you want to keep a copy or move it elsewhere.</p>
+        <div class="button-row">
+          <button class="btn light" id="export-btn">Export backup</button>
+          <button class="btn light" id="import-btn">Import backup</button>
+          <input type="file" id="import-file" accept="application/json,.json" hidden>
+        </div>
+        <hr>
+        <h3>Start over</h3>
+        <p class="muted">This clears all players' scores, bingo cards and game progress from this browser.</p>
+        <button class="btn danger full" id="reset-btn">Reset the entire game</button>
+      </div>
+    </section>
+  </main>
+</div>
 
-<div class="footer"><div class="footerinner">
-  <button class="btn light" onclick="openPanel('bingo')">🎯 Spot something</button>
-  <button class="btn aqua" onclick="openPanel('today')">🎲 Daily challenge</button>
-</div></div>
-<div class="toast" id="toast"></div>
+<nav class="nav" aria-label="Game navigation">
+  <button class="active" data-view="today"><span>☀️</span>Today</button>
+  <button data-view="bingo"><span>🎯</span>Bingo</button>
+  <button data-view="facebook"><span>📱</span>Facebook</button>
+  <button data-view="quests"><span>🧭</span>Quests</button>
+  <button data-view="scores"><span>🏆</span>Scores</button>
+</nav>
+
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
 <script>
+"use strict";
+
+const STORAGE_KEY = "cruise-chaos-v2";
+
+const PLAYERS = [
+  { id: "you", name: "You", emoji: "😎" },
+  { id: "mum", name: "Mum", emoji: "👑" },
+  { id: "dad", name: "Dad", emoji: "🕶️" }
+];
+
+const DAILY_CHALLENGES = [
+  { title: "The Chair Hog", description: "Spot someone reserving multiple pool loungers with towels.", points: 3, emoji: "🏖️" },
+  { title: "The Lift Olympics", description: "Witness someone take the lift for a journey that is basically one floor.", points: 3, emoji: "🛗" },
+  { title: "The Dress Code Debate", description: "Hear someone complain about what other passengers are wearing.", points: 3, emoji: "👔" },
+  { title: "The Buffet Architect", description: "Spot someone building a buffet plate that defies the laws of physics.", points: 3, emoji: "🍽️" },
+  { title: "The Photographer", description: "See a passenger stop in the middle of a busy walkway for a photo shoot.", points: 3, emoji: "📸" },
+  { title: "The Queue Detective", description: "Find someone loudly questioning why a queue exists.", points: 3, emoji: "🕵️" },
+  { title: "The Temperature Expert", description: "Hear someone confidently explain why the ship is too hot or too cold.", points: 3, emoji: "🌡️" },
+  { title: "The Cruise Influencer", description: "Spot someone filming a dramatic tour of an entirely ordinary corridor.", points: 3, emoji: "🎥" }
+];
+
+const BINGO_ITEMS = [
+  ["🏖️", "Towel on a lounger before breakfast"],
+  ["🛗", "Someone presses every lift button"],
+  ["🍽️", "A plate stacked like a Jenga tower"],
+  ["📸", "Photo shoot in a busy walkway"],
+  ["👕", "Matching family cruise shirts"],
+  ["☀️", "Someone burnt to a crisp"],
+  ["🧳", "Huge suitcase blocking the corridor"],
+  ["🪑", "Someone saves seats for a whole group"],
+  ["🗣️", "Loud speakerphone conversation"],
+  ["🍦", "Ice cream before 10 am"],
+  ["🗺️", "Someone completely lost"],
+  ["🤳", "Selfie stick in the wild"],
+  ["⏰", "Someone arrives very late"],
+  ["💃", "Unexpected public dancing"],
+  ["🍹", "A drink bigger than someone's head"],
+  ["🧥", "A jacket worn in tropical heat"],
+  ["😤", "Someone complains about a minor inconvenience"],
+  ["🚶", "Someone stops abruptly in a walkway"],
+  ["🎒", "A backpack almost as big as its owner"],
+  ["👀", "Someone watches another table's food arrive"],
+  ["🧴", "An extreme amount of sunscreen"],
+  ["🏃", "Someone rushing despite being on holiday"],
+  ["🎤", "Someone singing loudly in public"],
+  ["🛍️", "A souvenir purchase already regretted"],
+  ["🧢", "A truly questionable holiday hat"],
+  ["🥐", "Someone takes food away from the buffet"],
+  ["📢", "A passenger makes an announcement to strangers"],
+  ["😴", "Someone asleep in a public lounge"]
+];
+
+const FACEBOOK_POSTS = [
+  { text: "“Has anyone else received their luggage yet?” posted 14 minutes after boarding.", points: 2 },
+  { text: "Someone asks what to pack, despite 400 existing packing threads.", points: 2 },
+  { text: "A very serious debate about dress codes.", points: 2 },
+  { text: "Someone asks what time they should arrive at the port.", points: 1 },
+  { text: "A complaint about the weather at a tropical destination.", points: 1 },
+  { text: "Someone asks whether the ship has food.", points: 2 },
+  { text: "A photo of a suitcase asking “Is this too big?”", points: 1 },
+  { text: "Someone posts a countdown months before sailing.", points: 1 },
+  { text: "A dramatic post about a minor itinerary change.", points: 2 },
+  { text: "Someone asks if they can bring an item already listed in the rules.", points: 2 },
+  { text: "A post asking for tips, followed by arguments over the tips.", points: 2 },
+  { text: "Someone complains that another passenger is enjoying themselves incorrectly.", points: 2 },
+  { text: "A post asking for the best cabin, with no budget or preferences.", points: 1 },
+  { text: "Someone claims the cruise was ruined before it even began.", points: 2 },
+  { text: "A blurry photo asking people to identify a mystery object.", points: 1 },
+  { text: "Someone posts a full itinerary and asks what they should do.", points: 1 }
+];
+
+const QUESTS = [
+  { emoji: "🤝", title: "Make a new cruise friend", description: "Have a friendly conversation with someone you didn't know before.", points: 3 },
+  { emoji: "🌅", title: "Catch a sunrise or sunset", description: "Actually stop and enjoy the view.", points: 2 },
+  { emoji: "🍹", title: "Try a new drink", description: "Choose something you haven't tried before.", points: 1 },
+  { emoji: "🍴", title: "Try an unfamiliar food", description: "Try something new from the menu or buffet.", points: 2 },
+  { emoji: "🕺", title: "Commit to the entertainment", description: "Join in a game, activity or dance.", points: 3 },
+  { emoji: "📷", title: "Get a family photo", description: "All three players must be in the photo.", points: 2 },
+  { emoji: "🧭", title: "Explore somewhere new", description: "Visit an area of the ship you haven't explored.", points: 1 },
+  { emoji: "🧠", title: "Learn a crew member's name", description: "Have a genuine, respectful conversation.", points: 2 },
+  { emoji: "🌴", title: "Enjoy a port without rushing", description: "Take a moment to relax instead of ticking off activities.", points: 2 },
+  { emoji: "🎲", title: "Try a ship activity", description: "Join a trivia session, game or organised activity.", points: 2 },
+  { emoji: "👗", title: "Dress for the occasion", description: "Make an effort for a themed or formal evening.", points: 1 },
+  { emoji: "🧘", title: "Have a completely lazy hour", description: "Relax without feeling you need to be doing something.", points: 2 },
+  { emoji: "🍰", title: "Find a new favourite dessert", description: "Taste something worth remembering.", points: 1 },
+  { emoji: "💌", title: "Send a holiday update", description: "Share a photo or message with someone back home.", points: 1 }
+];
+
+const COURT_CASES = [
+  ["The Case of the 6 am Lounger", "Is placing a towel on a sunbed at sunrise a reservation or a hostile takeover?"],
+  ["The Great Lift Button Scandal", "The accused pressed every floor. Is this carelessness or a cry for help?"],
+  ["The Buffet Mountain", "Can a single plate legally support that much food?"],
+  ["The Corridor Influencer", "The accused stopped in the middle of the walkway for 19 photographs."],
+  ["The Formal Night Fashion Police", "Who appointed the accused head of the cruise dress-code department?"],
+  ["The Mystery Queue", "The accused joined a line without knowing what it was for, then complained."],
+  ["The Balcony Noise Complaint", "The accused believes the entire ship should observe their preferred bedtime."],
+  ["The Excursion Sprinter", "The accused ran through a port while repeatedly saying there was plenty of time."],
+  ["The All-You-Can-Eat Case", "The accused claims the buffet plate is a structural engineering achievement."],
+  ["The Facebook Expert", "The accused has never visited the destination but has very strong opinions."]
+];
+
 const $ = id => document.getElementById(id);
-const challenges = [
- ["Sun Lounger CEO","Spot a suspiciously territorial sunbed strategy. Observe, don't confront."],
- ["Buffet Mountain Architect","Notice a plate stacked with structural ambition."],
- ["Deck Detective","Find a ship sign that answers a question someone is asking anyway."],
- ["Formalwear Time Traveller","Spot an outfit that seems to have arrived from a different event."],
- ["Cruise Photographer","Notice someone filming a moment longer than the moment itself."],
- ["Lost-but-confident Navigator","Spot someone studying a deck map with intense concentration."],
- ["Dessert Diplomat","Get all three of you to agree on the best dessert today."],
- ["Activity Collector","Try one onboard activity none of you would normally choose."],
- ["Mystery Menu Mission","Find a menu item none of you has tried before."],
- ["Tiny Towel Empire","Spot an especially elaborate poolside towel setup."],
- ["Queue Philosopher","Hear someone wonder whether another queue is moving faster."],
- ["Three-Person Review Panel","Each rate the same snack or dessert out of ten."]
-];
-const bingoItems = [
- ["🧺","Buffet plate stacked like Jenga"],
- ["🧭","Someone confidently walking the wrong way"],
- ["📸","Photo of every dinner course"],
- ["🛟","Sun lounger claimed with a towel"],
- ["🎩","Formalwear at an unexpected time"],
- ["🍦","Soft-serve ice cream mission"],
- ["🗺️","Someone intensely studying the ship map"],
- ["🎤","Very committed karaoke performance"],
- ["🛍️","Someone carrying more shopping than planned"],
- ["🥐","Breakfast plate with ambitious proportions"],
- ["🕺","Person dancing before the music starts"],
- ["📱","Someone filming an entire show"],
- ["🧴","Full sunscreen application operation"],
- ["🛳️","Someone says 'it's a big ship'"],
- ["🍹","Drink garnished like a small garden"],
- ["😴","Someone napping in a public lounge"],
- ["🏃","Dramatic speed-walk to an activity"],
- ["🧥","Someone dressed for a different climate"]
-];
-const facebookItems = [
- ["📣","“What time do we board?” asked repeatedly",2],
- ["🪟","Debate about which side has the better ocean view",1],
- ["🧳","Packing list longer than a novel",2],
- ["🍽️","Heated debate about the dining room menu",2],
- ["🛏️","Question about saving loungers before breakfast",2],
- ["🛳️","Countdown post months before sailing",1],
- ["💸","Drinks-package value debate",2],
- ["📍","Port-day meeting point confusion",2],
- ["🧊","Question answered in the FAQ, pinned post or daily planner",2],
- ["🤳","Someone posts the same question that was asked yesterday",2]
-];
-const quests = [
- ["🍍","Try a buffet item none of you can identify",2],
- ["🪸","Find the ship's weirdest décor detail",2],
- ["🎶","Attend an activity you'd normally skip",3],
- ["🧋","Try a new café or bar-menu drink",2],
- ["🧩","Do a trivia quiz or game-show activity",3],
- ["🛳️","Find a new favourite quiet place to sit",2],
- ["👕","Get all three wearing the same colour",2],
- ["🍰","Rate one dessert each and rank the three",2],
- ["🌊","Take a family photo with the ocean behind you",1],
- ["🦀","Find something in the décor that looks like an animal",2],
- ["🧠","Learn one surprising fact about the ship",2],
- ["🧃","Find an unusual non-alcoholic drink",2],
- ["🪑","Find a great place to people-watch",2],
- ["🗓️","Plan tomorrow's must-do activity over a cuppa",1]
-];
-const cases = [
- "Is saving six sun loungers with one towel a crime against humanity?",
- "Should buffet plate stacking require an engineering licence?",
- "Is filming an entire live show on a phone a public nuisance?",
- "Should anyone who says “I'm not hungry” then eats your fries face consequences?",
- "Is arriving 45 minutes early for every activity a superpower or a problem?",
- "Should the person who says “I know a shortcut” be trusted?",
- "Is a cruise ship map a suggestion or a legally binding document?",
- "Should packing 14 pairs of shoes require a baggage surcharge?",
- "Is eating most of the dessert ordered “for the table” an international incident?",
- "Should anyone who says “let's take the stairs” be responsible for everyone's knees?"
-];
-const KEY = "cruiseChaosGame_v1";
-function fresh() {
- return {
-  players:["You","Mum","Dad"].map(name=>({name,score:0})),
-  active:0,day:1,challengeIndex:0,completed:{},bingo:[],fb:{},
-  quests:{},predictions:[],caseIndex:0
- };
-}
-let s;
-try { s=JSON.parse(localStorage.getItem(KEY)) || fresh(); }
-catch(e) { s=fresh(); }
-if(!s.players || s.players.length!==3) s=fresh();
-function save(){localStorage.setItem(KEY,JSON.stringify(s))}
-function safe(t){return String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function tell(t){const el=$("toast");el.textContent=t;el.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display="none",2300)}
-function addPoints(who,pts,reason){
- s.players[who].score+=pts;save();render();
- tell(`${s.players[who].name}: +${pts} points! ${reason}`);
-}
-function key(...parts){return [s.day,...parts].join("_")}
-function renderScores(){
- $("scores").innerHTML=s.players.map((p,i)=>`<button class="scorecard ${i===s.active?"active":""}" data-player="${i}"><span>${safe(p.name)}</span><strong>${p.score}</strong><span>POINTS</span></button>`).join("");
- $("player").innerHTML=s.players.map((p,i)=>`<option value="${i}" ${i===s.active?"selected":""}>Playing as: ${safe(p.name)}</option>`).join("");
- document.querySelectorAll("[data-player]").forEach(b=>b.onclick=()=>{s.active=+b.dataset.player;save();render()});
-}
-function renderDaily(){
- const c=challenges[s.challengeIndex%challenges.length], k=key("daily",s.active,s.challengeIndex);
- $("dailyTitle").textContent=c[0];$("dailyText").textContent=c[1];
- $("claimDaily").disabled=!!s.completed[k];
- $("claimDaily").textContent=s.completed[k]?"Challenge claimed ✓":"Claim 3 points";
-}
-function dealBingo(){
- let arr=[...bingoItems].sort(()=>Math.random()-.5).slice(0,9);
- s.bingo=arr.map((x,i)=>({emoji:x[0],text:x[1],id:i,done:false}));
- save();renderBingo();
-}
-function renderBingo(){
- if(!s.bingo || s.bingo.length!==9){dealBingo();return}
- $("bingo").innerHTML=s.bingo.map((x,i)=>`<button class="tile ${x.done?"done":""}" data-square="${i}"><span class="emoji">${x.emoji}</span>${safe(x.text)}</button>`).join("");
- $("bingoCount").textContent=`${s.bingo.filter(x=>x.done).length} / 9 spotted`;
- document.querySelectorAll("[data-square]").forEach(b=>b.onclick=()=>{
-  let i=+b.dataset.square,x=s.bingo[i];if(x.done)return;
-  x.done=true;addPoints(s.active,2,"Bingo spotted");
-  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8]];
-  if(!s.lineBonus)s.lineBonus={};
-  lines.forEach((line,n)=>{
-   let k=key("line",s.bingo.map(z=>z.text).join("~"),n);
-   if(line.every(j=>s.bingo[j].done)&&!s.lineBonus[k]){
-    s.lineBonus[k]=true;s.players[s.active].score+=3;save();tell("BINGO LINE! +3 bonus points 🎉");
-   }
+
+function defaultState() {
+  const scores = {};
+  const names = {};
+  PLAYERS.forEach(p => {
+    scores[p.id] = 0;
+    names[p.id] = p.name;
   });
-  render();
- });
+
+  return {
+    version: 2,
+    names,
+    scores,
+    activePlayer: "you",
+    day: 1,
+    dailyClaims: {},
+    courtClaims: {},
+    bingoCards: {},
+    facebookClaims: {},
+    questClaims: {},
+    predictions: [],
+    nextPredictionId: 1
+  };
 }
-function renderFacebook(){
- $("facebook").innerHTML=facebookItems.map((x,i)=>{
-  let k=key("fb",s.active,i),done=!!s.fb[k];
-  return `<div class="task"><span class="emoji">${x[0]}</span><div class="taskbody"><strong>${safe(x[1])}</strong><p>Classic cruise-group moment</p></div><span class="points">+${x[2]}</span><button class="btn ${done?"light":""}" data-fb="${i}" ${done?"disabled":""}>${done?"Done":"Tick"}</button></div>`;
- }).join("");
- document.querySelectorAll("[data-fb]").forEach(b=>b.onclick=()=>{
-  let i=+b.dataset.fb,k=key("fb",s.active,i);if(s.fb[k])return;s.fb[k]=true;
-  addPoints(s.active,facebookItems[i][2],"Facebook bingo");renderFacebook();
- });
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState();
+
+    const parsed = JSON.parse(raw);
+    const fresh = defaultState();
+
+    return {
+      ...fresh,
+      ...parsed,
+      names: { ...fresh.names, ...(parsed.names || {}) },
+      scores: { ...fresh.scores, ...(parsed.scores || {}) },
+      dailyClaims: parsed.dailyClaims || {},
+      courtClaims: parsed.courtClaims || {},
+      bingoCards: parsed.bingoCards || {},
+      facebookClaims: parsed.facebookClaims || {},
+      questClaims: parsed.questClaims || {},
+      predictions: Array.isArray(parsed.predictions) ? parsed.predictions : [],
+      nextPredictionId: Number(parsed.nextPredictionId) || 1
+    };
+  } catch (error) {
+    console.error("Could not load saved game:", error);
+    return defaultState();
+  }
 }
-function renderQuests(){
- $("questList").innerHTML=quests.map((q,i)=>{
-  let k=`${s.active}_${i}`,done=!!s.quests[k];
-  return `<div class="task"><span class="emoji">${q[0]}</span><div class="taskbody"><strong>${safe(q[1])}</strong><p>One-time reward for each player</p></div><span class="points">+${q[2]}</span><button class="btn ${done?"light":""}" data-quest="${i}" ${done?"disabled":""}>${done?"Done":"Claim"}</button></div>`;
- }).join("");
- document.querySelectorAll("[data-quest]").forEach(b=>b.onclick=>{
-  let i=+b.dataset.quest,k=`${s.active}_${i}`;if(s.quests[k])return;
-  s.quests[k]=true;addPoints(s.active,quests[i][2],"Side quest");renderQuests();
- });
+
+let state = loadState();
+let toastTimer = null;
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.error("Could not save game:", error);
+    showToast("Couldn't save. Check your browser storage.");
+  }
 }
-function renderPredictions(){
- $("predictions").innerHTML=s.predictions.length?s.predictions.map((p,i)=>`
- <div class="task"><span class="emoji">🔮</span><div class="taskbody"><strong>${safe(p.text)}</strong><p>By ${safe(s.players[p.player].name)} · Day ${p.day}</p></div><span class="points">+2</span><button class="btn ${p.done?"light":""}" data-pred="${i}" ${p.done?"disabled":""}>${p.done?"Scored":"Came true"}</button></div>
- `).join(""):'<p class="sub">No predictions yet. Make a bold forecast!</p>';
- document.querySelectorAll("[data-pred]").forEach(b=>b.onclick=()=>{
-  let p=s.predictions[+b.dataset.pred];if(p.done)return;p.done=true;
-  addPoints(p.player,2,"Prediction came true");renderPredictions();
- });
+
+function playerName(id) {
+  return state.names[id] || id;
 }
-function renderLeaderboard(){
- let list=[...s.players].sort((a,b)=>b.score-a.score);
- $("rankings").innerHTML=list.map((p,i)=>`<div class="ranking"><div class="rank">${i===0?"👑":i+1}</div><div class="rankname">${safe(p.name)}</div><div class="rankpoints">${p.score}</div></div>`).join("");
- $("champion").textContent=list[0].score?`${list[0].name} is the current Chaos Champion!`:"The crown is up for grabs!";
- s.players.forEach((p,i)=>$("name"+i).value=p.name);
+
+function activePlayer() {
+  return state.activePlayer;
 }
-function render(){
- renderScores();renderDaily();renderBingo();renderFacebook();renderQuests();renderPredictions();renderLeaderboard();
- $("player").value=s.active;$("day").value=s.day;
+
+function dayKey() {
+  return String(state.day);
 }
-function openPanel(name){
- document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.panel===name));
- document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===name));
- window.scrollTo({top:0,behavior:"smooth"});
+
+function playerDayKey(player = activePlayer()) {
+  return `${dayKey()}-${player}`;
 }
-document.querySelectorAll("[data-panel]").forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));
-$("player").onchange=e=>{s.active=+e.target.value;save();render()};
-$("day").onchange=e=>{s.day=+e.target.value;save();render()};
-$("nextDaily").onclick=()=>{s.challengeIndex=(s.challengeIndex+1)%challenges.length;save();renderDaily()};
-$("claimDaily").onclick=()=>{
- let k=key("daily",s.active,s.challengeIndex);if(s.completed[k])return;
- s.completed[k]=true;addPoints(s.active,3,"Daily challenge");
-};
-$("newCard").onclick=()=>{dealBingo();tell("New bingo card dealt!")};
-$("addPrediction").onclick=()=>{
- let text=$("prediction").value.trim();if(!text)return tell("Write a prediction first!");
- s.predictions.unshift({text,player:s.active,day:s.day,done:false});
- $("prediction").value="";save();renderPredictions();tell("Prediction saved. The pressure is on.");
-};
-$("nextCase").onclick=()=>{s.caseIndex=(s.caseIndex+1)%cases.length;$("courtCase").textContent=cases[s.caseIndex];save()};
-$("courtWin").onclick=()=>addPoints(s.active,2,"Courtroom verdict");
-$("saveNames").onclick=()=>{
- for(let i=0;i<3;i++){let n=$("name"+i).value.trim();if(n)s.players[i].name=n}
- save();render();tell("Crew list updated!");
-};
-$("export").onclick=()=>{
- const blob=new Blob([JSON.stringify(s,null,2)],{type:"application/json"});
- const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="cruise-chaos-backup.json";a.click();URL.revokeObjectURL(a.href);
-};
-$("reset").onclick=()=>{
- if(confirm("Reset every score and game setting? Export a backup first if needed.")){
-  s=fresh();save();dealBingo();render();tell("Fresh cruise, fresh scores!");
- }
-};
-if(!s.bingo || s.bingo.length!==9)dealBingo();
-render();
+
+function addPoints(player, points, message) {
+  if (!Object.prototype.hasOwnProperty.call(state.scores, player)) return;
+  state.scores[player] = Math.max(0, Number(state.scores[player] || 0) + points);
+  save();
+  renderAll();
+  showToast(`${message || "Points earned!"} +${points} points for ${playerName(player)}!`);
+}
+
+function showToast(message) {
+  const el = $("toast");
+  el.textContent = message;
+  el.classList.remove("hidden");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add("hidden"), 2600);
+}
+
+function shuffle(items) {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function renderPlayers() {
+  $("player-cards").innerHTML = PLAYERS.map(p => {
+    const selected = state.activePlayer === p.id;
+    return `
+      <button class="player-card ${selected ? "active" : ""}"
+        data-player="${p.id}" aria-pressed="${selected}">
+        <span class="player-emoji">${p.emoji}</span>
+        <span class="player-name">${escapeHTML(playerName(p.id))}</span>
+        <span class="player-score">${Number(state.scores[p.id] || 0)}</span>
+        <span class="player-points">POINTS</span>
+      </button>`;
+  }).join("");
+
+  $("player-cards").querySelectorAll("[data-player]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.activePlayer = btn.dataset.player;
+      save();
+      renderAll();
+      showToast(`${playerName(state.activePlayer)} is now playing.`);
+    });
+  });
+}
+
+function renderDaily() {
+  const index = (state.day - 1) % DAILY_CHALLENGES.length;
+  const challenge = DAILY_CHALLENGES[index];
+  const key = playerDayKey();
+  const claimed = !!state.dailyClaims[key];
+
+  $("daily-panel").innerHTML = `
+    <span class="tag">Day ${state.day} · Daily challenge</span>
+    <div class="big-number">${challenge.emoji}</div>
+    <h3>${escapeHTML(challenge.title)}</h3>
+    <p class="muted">${escapeHTML(challenge.description)}</p>
+    <p><strong>Reward: ${challenge.points} points</strong></p>
+    <button class="btn ${claimed ? "light" : "teal"} full"
+      id="claim-daily-btn" ${claimed ? "disabled" : ""}>
+      ${claimed ? "✓ Claimed today" : "I spotted it! Claim points"}
+    </button>`;
+
+  const claimBtn = $("claim-daily-btn");
+  claimBtn.addEventListener("click", () => {
+    const currentKey = playerDayKey();
+    if (state.dailyClaims[currentKey]) return;
+    state.dailyClaims[currentKey] = true;
+    addPoints(activePlayer(), challenge.points, "Daily challenge!");
+  });
+
+  const caseIndex = (state.day - 1) % COURT_CASES.length;
+  const courtCase = COURT_CASES[caseIndex];
+  const courtClaimed = !!state.courtClaims[playerDayKey()];
+
+  $("court-title").textContent = courtCase[0];
+  $("court-description").textContent = courtCase[1];
+  $("court-btn").disabled = courtClaimed;
+  $("court-btn").classList.toggle("light", courtClaimed);
+  $("court-btn").classList.toggle("teal", !courtClaimed);
+  $("court-btn").textContent = courtClaimed
+    ? "✓ Verdict delivered today"
+    : "⚖️ Deliver the verdict (+2)";
+
+  $("court-btn").onclick = () => {
+    const keyNow = playerDayKey();
+    if (state.courtClaims[keyNow]) return;
+    state.courtClaims[keyNow] = true;
+    addPoints(activePlayer(), 2, "Courtroom verdict!");
+  };
+}
+
+function renderPredictions() {
+  const list = $("predictions-list");
+
+  if (!state.predictions.length) {
+    list.innerHTML = '<div class="empty">No predictions yet. Make your first wildly confident claim.</div>';
+    return;
+  }
+
+  list.innerHTML = state.predictions.map(prediction => {
+    const status = prediction.status || "pending";
+    let action = "";
+
+    if (status === "pending") {
+      action = `
+        <div class="button-row">
+          <button class="btn teal" data-prediction-win="${prediction.id}">I was right (+2)</button>
+          <button class="btn light" data-prediction-loss="${prediction.id}">I was wrong</button>
+        </div>`;
+    } else {
+      action = `<small>${status === "won" ? "✓ Correct · 2 points awarded" : "Prediction missed"}</small>`;
+    }
+
+    return `
+      <div class="fb-post">
+        <div class="post-title">${escapeHTML(prediction.text)}</div>
+        <div class="post-caption">By ${escapeHTML(playerName(prediction.player))}</div>
+        ${action}
+      </div>`;
+  }).join("");
+
+  list.querySelectorAll("[data-prediction-win]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const prediction = state.predictions.find(p => p.id === Number(btn.dataset.predictionWin));
+      if (!prediction || prediction.status !== "pending") return;
+      prediction.status = "won";
+      addPoints(prediction.player, 2, "Correct prediction!");
+    });
+  });
+
+  list.querySelectorAll("[data-prediction-loss]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const prediction = state.predictions.find(p => p.id === Number(btn.dataset.predictionLoss));
+      if (!prediction || prediction.status !== "pending") return;
+      prediction.status = "lost";
+      save();
+      renderAll();
+      showToast("Prediction marked as wrong.");
+    });
+  });
+}
+
+function bingoKey(player = activePlayer()) {
+  return `${state.day}-${player}`;
+}
+
+function getBingoCard(player = activePlayer()) {
+  const key = bingoKey(player);
+  if (!state.bingoCards[key]) {
+    state.bingoCards[key] = {
+      items: shuffle(BINGO_ITEMS).slice(0, 9),
+      marked: [],
+      awardedLines: []
+    };
+    save();
+  }
+
+  const card = state.bingoCards[key];
+  if (!Array.isArray(card.marked)) card.marked = [];
+  if (!Array.isArray(card.awardedLines)) card.awardedLines = [];
+  return card;
+}
+
+function getBingoLines() {
+  return [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
+}
+
+function renderBingo() {
+  const card = getBingoCard();
+  const markedSet = new Set(card.marked);
+  const completed = card.marked.length;
+
+  $("bingo-summary").textContent =
+    `${playerName(activePlayer())} · Day ${state.day} · ${completed}/9 squares completed`;
+
+  $("bingo-progress").style.width = `${completed / 9 * 100}%`;
+
+  $("bingo-grid").innerHTML = card.items.map((item, index) => {
+    const marked = markedSet.has(index);
+    return `
+      <button class="bingo-cell ${marked ? "marked" : ""}"
+        data-bingo-index="${index}" ${marked ? "disabled" : ""}
+        aria-pressed="${marked}">
+        <span class="cell-emoji">${item[0]}</span>
+        ${escapeHTML(item[1])}
+      </button>`;
+  }).join("");
+
+  $("bingo-grid").querySelectorAll("[data-bingo-index]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const player = activePlayer();
+      const cardNow = getBingoCard(player);
+      const index = Number(btn.dataset.bingoIndex);
+
+      if (cardNow.marked.includes(index)) return;
+
+      cardNow.marked.push(index);
+      save();
+
+      const newlyCompletedLines = [];
+      getBingoLines().forEach((line, lineIndex) => {
+        if (line.every(i => cardNow.marked.includes(i)) &&
+            !cardNow.awardedLines.includes(lineIndex)) {
+          cardNow.awardedLines.push(lineIndex);
+          newlyCompletedLines.push(lineIndex);
+        }
+      });
+
+      save();
+      const bonus = newlyCompletedLines.length * 3;
+      const points = 2 + bonus;
+      addPoints(
+        player,
+        points,
+        bonus ? `Bingo square plus ${newlyCompletedLines.length} line bonus!` : "Bingo square!"
+      );
+    });
+  });
+
+  $("new-bingo-btn").onclick = () => {
+    if (!confirm(`Deal a new bingo card for ${playerName(activePlayer())} on Day ${state.day}? Their current card progress will be lost.`)) return;
+
+    state.bingoCards[bingoKey()] = {
+      items: shuffle(BINGO_ITEMS).slice(0, 9),
+      marked: [],
+      awardedLines: []
+    };
+    save();
+    renderBingo();
+    showToast("Fresh bingo card dealt!");
+  };
+}
+
+function renderFacebook() {
+  const player = activePlayer();
+  const key = playerDayKey(player);
+  const claims = state.facebookClaims[key] || [];
+
+  $("facebook-list").innerHTML = FACEBOOK_POSTS.map((post, index) => {
+    const claimed = claims.includes(index);
+
+    return `
+      <div class="fb-post">
+        <div class="post-title">${escapeHTML(post.text)}</div>
+        <div class="post-caption">Reward: ${post.points} ${post.points === 1 ? "point" : "points"}</div>
+        <button class="btn ${claimed ? "light" : "teal"} full"
+          data-facebook-index="${index}" ${claimed ? "disabled" : ""}>
+          ${claimed ? "✓ Claimed by this player today" : "I spotted this post"}
+        </button>
+      </div>`;
+  }).join("");
+
+  $("facebook-list").querySelectorAll("[data-facebook-index]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const playerNow = activePlayer();
+      const keyNow = playerDayKey(playerNow);
+      const index = Number(btn.dataset.facebookIndex);
+      const claimsNow = state.facebookClaims[keyNow] || [];
+
+      if (claimsNow.includes(index)) return;
+
+      state.facebookClaims[keyNow] = [...claimsNow, index];
+      addPoints(playerNow, FACEBOOK_POSTS[index].points, "Facebook bingo!");
+    });
+  });
+}
+
+function renderQuests() {
+  const player = activePlayer();
+  const claims = state.questClaims[player] || [];
+
+  $("quests-list").innerHTML = QUESTS.map((quest, index) => {
+    const claimed = claims.includes(index);
+
+    return `
+      <div class="list-item">
+        <div class="item-emoji">${quest.emoji}</div>
+        <div class="item-content">
+          <strong>${escapeHTML(quest.title)}</strong>
+          <small>${escapeHTML(quest.description)}</small>
+          <small>${quest.points} ${quest.points === 1 ? "point" : "points"}</small>
+        </div>
+        <button class="btn ${claimed ? "light" : "teal"}"
+          data-quest-index="${index}" ${claimed ? "disabled" : ""}>
+          ${claimed ? "✓ Done" : "Claim"}
+        </button>
+      </div>`;
+  }).join("");
+
+  $("quests-list").querySelectorAll("[data-quest-index]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const playerNow = activePlayer();
+      const index = Number(btn.dataset.questIndex);
+      const claimsNow = state.questClaims[playerNow] || [];
+
+      if (claimsNow.includes(index)) return;
+
+      state.questClaims[playerNow] = [...claimsNow, index];
+      addPoints(playerNow, QUESTS[index].points, "Side quest completed!");
+    });
+  });
+}
+
+function renderLeaderboard() {
+  const sorted = [...PLAYERS].sort((a, b) => {
+    const diff = Number(state.scores[b.id] || 0) - Number(state.scores[a.id] || 0);
+    return diff || PLAYERS.findIndex(p => p.id === a.id) -
+      PLAYERS.findIndex(p => p.id === b.id);
+  });
+
+  $("leaderboard").innerHTML = sorted.map((p, index) => `
+    <div class="rank-row">
+      <div class="rank">${["🥇", "🥈", "🥉"][index]}</div>
+      <div class="rank-info">
+        <strong>${escapeHTML(playerName(p.id))}</strong>
+        <small>${state.activePlayer === p.id ? "Currently playing" : "Cruise competitor"}</small>
+      </div>
+      <div class="rank-points">${Number(state.scores[p.id] || 0)}</div>
+    </div>
+  `).join("");
+}
+
+function renderNameFields() {
+  $("name-fields").innerHTML = PLAYERS.map(p => `
+    <div class="form-row">
+      <label style="display:flex;align-items:center;gap:8px;min-width:65px">
+        <span>${p.emoji}</span>
+        <strong>${p.id === "you" ? "You" : p.id === "mum" ? "Mum" : "Dad"}</strong>
+      </label>
+      <input data-name-id="${p.id}" maxlength="24"
+        value="${escapeAttribute(playerName(p.id))}" aria-label="${p.id} player name">
+    </div>
+  `).join("");
+}
+
+function renderAll() {
+  $("day-select").value = String(state.day);
+  renderPlayers();
+  renderDaily();
+  renderPredictions();
+  renderBingo();
+  renderFacebook();
+  renderQuests();
+  renderLeaderboard();
+  renderNameFields();
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
+
+function escapeAttribute(value) {
+  return escapeHTML(value);
+}
+
+document.querySelectorAll(".nav button").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+
+    button.classList.add("active");
+    $("view-" + button.dataset.view).classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+
+$("day-select").addEventListener("change", event => {
+  const day = Number(event.target.value);
+  if (!Number.isInteger(day) || day < 1 || day > 8) return;
+
+  state.day = day;
+  save();
+  renderAll();
+  showToast(`Switched to cruise Day ${day}.`);
+});
+
+$("prediction-form").addEventListener("submit", event => {
+  event.preventDefault();
+  const input = $("prediction-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  state.predictions.push({
+    id: state.nextPredictionId++,
+    text,
+    player: activePlayer(),
+    status: "pending",
+    dayCreated: state.day
+  });
+
+  input.value = "";
+  save();
+  renderPredictions();
+  showToast("Prediction saved! May the odds be in your favour.");
+});
+
+$("save-names-btn").addEventListener("click", () => {
+  document.querySelectorAll("[data-name-id]").forEach(input => {
+    const id = input.dataset.nameId;
+    const name = input.value.trim().slice(0, 24);
+    state.names[id] = name || PLAYERS.find(p => p.id === id).name;
+  });
+
+  save();
+  renderAll();
+  showToast("Player names saved!");
+});
+
+$("export-btn").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(state, null, 2)], {
+    type: "application/json"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = "cruise-chaos-backup.json";
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+  showToast("Backup exported.");
+});
+
+$("import-btn").addEventListener("click", () => {
+  $("import-file").click();
+});
+
+$("import-file").addEventListener("change", async event => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  try {
+    const imported = JSON.parse(await file.text());
+
+    if (!imported || typeof imported !== "object" ||
+        !imported.scores || !imported.names) {
+      throw new Error("This doesn't look like a Cruise Chaos backup.");
+    }
+
+    if (!confirm("Import this backup? It will replace the current game on this device.")) {
+      event.target.value = "";
+      return;
+    }
+
+    const fresh = defaultState();
+
+    state = {
+      ...fresh,
+      ...imported,
+      names: { ...fresh.names, ...imported.names },
+      scores: { ...fresh.scores, ...imported.scores },
+      dailyClaims: imported.dailyClaims || {},
+      courtClaims: imported.courtClaims || {},
+      bingoCards: imported.bingoCards || {},
+      facebookClaims: imported.facebookClaims || {},
+      questClaims: imported.questClaims || {},
+      predictions: Array.isArray(imported.predictions) ? imported.predictions : [],
+      nextPredictionId: Number(imported.nextPredictionId) || 1
+    };
+
+    if (!PLAYERS.some(p => p.id === state.activePlayer)) {
+      state.activePlayer = "you";
+    }
+
+    state.day = Math.min(8, Math.max(1, Number(state.day) || 1));
+    save();
+    renderAll();
+    showToast("Backup imported!");
+  } catch (error) {
+    alert("Could not import that file. Please choose a valid Cruise Chaos backup.");
+    console.error(error);
+  } finally {
+    event.target.value = "";
+  }
+});
+
+$("reset-btn").addEventListener("click", () => {
+  if (!confirm("Reset EVERYTHING? All saved scores, cards, predictions and progress on this device will be erased.")) return;
+  if (!confirm("Last chance! Are you sure you want to start a brand-new game?")) return;
+
+  state = defaultState();
+  save();
+  renderAll();
+  showToast("Fresh cruise. Fresh chaos.");
+});
+
+renderAll();
 </script>
 </body>
 </html>
